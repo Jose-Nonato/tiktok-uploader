@@ -4,6 +4,31 @@ import requests
 from config import VIDEO_PATH
 
 class TikTokVideoUploader(IVideoUploader):
+    def __init__(self):
+        self.API_BASE = "https://open.tiktokapis.com/v2/"
+
+
+    def publish(self, token: str, publish_id: str, title: str = "Meu Vídeo") -> str:
+        url = "https://open.tiktokapis.com/v2/post/publish/inbox/video/complete/"
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "Content-Type": "application/json"
+        }
+        data = {
+            "publish_id": publish_id,
+            "post_info": {
+                "title": title,
+                "privacy_level": "PUBLIC",
+                "disable_duet": False,
+                "disable_comment": False,
+                "disable_stitch": False
+            }
+        }
+        response = requests.post(url, headers=headers, json=data)
+        response.raise_for_status()
+        return f"https://www.tiktok.com/@me/video/{publish_id}"
+
+
     def upload(self, access_token: str) -> str:
         video_size = os.path.getsize(VIDEO_PATH)
 

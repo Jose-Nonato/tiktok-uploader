@@ -16,8 +16,9 @@ def main():
     token = auth_service.get_access_token(code)
 
     if token:
-        publish_id = uploader.upload(token)
-        print(f"Vídeo enviado com sucesso! Publish ID: {publish_id}")
+        publish_id = uploader.upload(token) # Faz o upload do vídeo
+        video_url = uploader.public(token, publish_id) # Publica o vídeo
+        print(f">> Vídeo enviado com sucesso!\n>> Publish ID: {publish_id} || >> URL: {video_url}")
 
 if __name__ == "__main__":
     main()
